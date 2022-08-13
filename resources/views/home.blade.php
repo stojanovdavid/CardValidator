@@ -4,6 +4,11 @@
 <div class="padding">
     <div class="row">
         <div class="col-sm-6">
+            @if (session('success'))
+                <div class="text-success">
+                    {{ session('success') }}
+                </div>
+            @endif
             <form method="POST" action="{{ route('store') }}">
                 @csrf
             <div class="card">
@@ -12,8 +17,8 @@
                         <strong>Credit Card</strong>
                         <small>enter your card details</small>
                     </div>
-                    <select name="card_type"class="btn btn-primary">
-                        <option value="" default>Select Card:</option>
+                    <select name="card_type"class="btn btn-primary @error('card_type') border border-danger bg-white text-dark @enderror">
+                        <option value="" default>Select a card</option>
                         <option value="default">Default Card</option>
                         <option value="american">American Card</option>
                     </select>
@@ -40,12 +45,21 @@
                                         <div class="input-group-append">
                                         </div>
                                     </div>
+                                    @if (session('luhn_validation'))
+                                    <div class="text-danger">
+                                        {{ session('luhn_validation') }}
+                                    </div>
+                                    @endif
                                     @if (session('PAN_error'))
                                         <div class="text-danger">
                                             {{ session('PAN_error') }}
                                         </div>
                                     @endif
-
+                                    @if (session('PAN_error_length'))
+                                    <div class="text-danger">
+                                        {{ session('PAN_error_length') }}
+                                    </div>
+                                    @endif
                                     
                                     <div class="row pb-3">
                                         <div class="col-sm-8">
@@ -90,11 +104,11 @@
                                             <div class="form-group">
                                             <div>
                                                 <label for="cvv">CVV/CVC</label>
-                                            <input class="form-control @error('card_number') border border-danger @enderror" id="cvv" name="cvv" type="text" placeholder="123">
+                                            <input class="form-control @error('cvv') border border-danger @enderror" id="cvv" name="cvv" type="text" placeholder="123">
                                             <div class="text-danger">
-                                                @error('cvv')
-                                                    {{ $message }}
-                                                @enderror
+                                                @if (session('cvv_error'))
+                                                    {{ session('cvv_error') }}
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
